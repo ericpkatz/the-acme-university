@@ -1,46 +1,126 @@
 const express = require('express');
 const app = express();
 
+const students = [
+  {
+    name: 'moe',
+    bio: 'this is moes bio'
+  },
+  {
+    name: 'lucy',
+    bio: 'this is lucys bio'
+  },
+  {
+    name: 'ethyl',
+    bio: 'this is ethyls bio'
+  }
+];
+
 app.get('/', (req, res)=> {
-  res.send('<a href=/foo>foo</a> <a href=/bazz>bar</a> <a href=/bazz>bazz</a> hello world');
+  res.send(`
+    <html>
+      <head>
+        <title>The Acme University</title>
+        <style>
+          body {
+            font-family: verdana;
+          }
+          nav {
+            display: flex;
+            justify-content: space-around;
+          }
+
+          nav a.selected {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <nav>
+          <a href='/' class='selected'>Home</a>
+          <a href='/students'>Students</a>
+        </nav>
+        <div>
+          Welcome to Acme University!
+        </div>
+      </body>
+    </html>
+  `);
 });
 
-app.get('/foo', (req, res)=> {
-  res.send('<a href=/>home</a> TBD foo page goes here');
+app.get('/students', (req, res)=> {
+  res.send(`
+    <html>
+      <head>
+        <title>The Acme University</title>
+        <style>
+          body {
+            font-family: verdana;
+          }
+          nav {
+            display: flex;
+            justify-content: space-around;
+          }
+
+          nav a.selected {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <nav>
+          <a href='/'>Home</a>
+          <a href='/students' class='selected'>Students</a>
+        </nav>
+        <div>
+          <ul>
+            ${
+              students.map( student => {
+                return `<li><a href='/students/${student.name}'>${ student.name}</a></li>`;
+              }).join('')
+            }
+          </ul>
+        </div>
+      </body>
+    </html>
+  `);
 });
 
-app.get('/bar', (req, res)=> {
-  res.send('<a href=/>Home</a> TBD bar page goes here');
-});
+app.get('/students/:name', (req, res)=> {
+  const student = students.find(student => student.name === req.params.name)
+  res.send(`
+    <html>
+      <head>
+        <title>The Acme University</title>
+        <style>
+          body {
+            font-family: verdana;
+          }
+          nav {
+            display: flex;
+            justify-content: space-around;
+          }
 
-app.get('/bazz', (req, res)=> {
-  res.send('<a href=/>Home</a> TBD bazz page goes here');
+          nav a.selected {
+            font-weight: bold;
+          }
+        </style>
+      </head>
+      <body>
+        <nav>
+          <a href='/'>Home</a>
+          <a href='/students' class='selected'>Students</a>
+        </nav>
+        <div>
+          <h1>${student.name}</h1>
+          <div>
+            ${student.bio}
+          </div>
+        </div>
+      </body>
+    </html>
+  `);
 });
-/*
-const server = http.createServer((req, res)=> {
-  if(req.url === '/'){
-    res.write('Hello world');
-    res.end();
-  }
-  else if(req.url === '/foo'){
-    res.write('TBD foo page');
-    res.end();
-  }
-  else if(req.url === '/bar'){
-    res.write('TBD bar page');
-    res.end();
-  }
-  else if(req.url === '/bazz'){
-    res.write('TBD bazz page');
-    res.end();
-  }
-  else {
-    res.statusCode = 404;
-    res.write('This page doesnt exist!');
-    res.end();
-  }
-});
-*/
 
 const port = process.env.PORT || 3000;
 app.listen(port, ()=> {
