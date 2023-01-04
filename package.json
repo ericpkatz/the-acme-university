@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "process": "nodemon scoreProcessor.js"
+    "process": "nodemon scoreProcessor.js",
+    "start:dev": "nodemon server"
   },
   "keywords": [],
   "author": "",
