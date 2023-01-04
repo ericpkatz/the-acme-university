@@ -1,4 +1,22 @@
-const http = require('http');
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res)=> {
+  res.send('<a href=/foo>foo</a> <a href=/bazz>bar</a> <a href=/bazz>bazz</a> hello world');
+});
+
+app.get('/foo', (req, res)=> {
+  res.send('<a href=/>home</a> TBD foo page goes here');
+});
+
+app.get('/bar', (req, res)=> {
+  res.send('<a href=/>Home</a> TBD bar page goes here');
+});
+
+app.get('/bazz', (req, res)=> {
+  res.send('<a href=/>Home</a> TBD bazz page goes here');
+});
+/*
 const server = http.createServer((req, res)=> {
   if(req.url === '/'){
     res.write('Hello world');
@@ -22,8 +40,9 @@ const server = http.createServer((req, res)=> {
     res.end();
   }
 });
+*/
 
 const port = process.env.PORT || 3000;
-server.listen(port, ()=> {
+app.listen(port, ()=> {
   console.log(`listening on port ${port}`);
 })
